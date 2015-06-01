@@ -7,10 +7,17 @@ date_default_timezone_set('GMT');
 $lastTimes = fetchArray(query("SELECT timestamp FROM wind_vs_demand ORDER BY timestamp DESC LIMIT 1"));
 
 $startTime = strtotime($lastTimes[0]);
+
+if($startTime == ''){
+  $startTime = date(strtotime ('-60 day'));
+  echo "startTime not set - fetching previous 60 days\n";
+}
 $endTime   = time();
+echo "startTime:  $startTime \n";
+echo "endTime:  $endTime \n";
 
 if ($endTime - $startTime < 60 * 5) {
-  echo 'up to date';
+  echo "up to date";
   return;
 }
 
